@@ -1,4 +1,4 @@
-package com.cgz.ticketing.member.apsect;
+package com.cgz.ticketing.common.aspect;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.support.spring.PropertyPreFilters;
