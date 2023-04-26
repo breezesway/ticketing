@@ -1,5 +1,7 @@
 package com.cgz.ticketing.member.controller;
 
+import com.cgz.ticketing.common.resp.CommonResp;
+import com.cgz.ticketing.member.req.MemberRegisterReq;
 import com.cgz.ticketing.member.service.MemberService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +17,12 @@ public class MemberController {
     private MemberService memberService;
 
     @GetMapping("/count")
-    public Integer hello(){
-        return memberService.count();
+    public CommonResp<Integer> hello(){
+        return new CommonResp<>(memberService.count());
     }
 
     @PostMapping("/register")
-    public long register(String mobile){
-        return memberService.register(mobile);
+    public CommonResp<Long> register(MemberRegisterReq req){
+        return new CommonResp<>(memberService.register(req));
     }
 }
