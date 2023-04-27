@@ -7,6 +7,7 @@ import com.cgz.ticketing.member.domain.Member;
 import com.cgz.ticketing.member.domain.MemberExample;
 import com.cgz.ticketing.member.mapper.MemberMapper;
 import com.cgz.ticketing.member.req.MemberRegisterReq;
+import com.cgz.ticketing.member.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class MemberService {
             throw new AppException(AppExceptionEnum.MEMBER_MOBILE_EXIST);
         }
         Member member = new Member();
-        member.setId(System.currentTimeMillis());
+        member.setId(SnowUtil.getSnowflakeNextId());
         member.setMobile(mobile);
         memberMapper.insert(member);
         return member.getId();
