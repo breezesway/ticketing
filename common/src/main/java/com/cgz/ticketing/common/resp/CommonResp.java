@@ -27,9 +27,9 @@ public class CommonResp<T> {
         this.content = content;
     }
 
-    public CommonResp(String message, T content){
+    public CommonResp(boolean success, String message){
+        this.success = success;
         this.message = message;
-        this.content = content;
     }
 
 }
