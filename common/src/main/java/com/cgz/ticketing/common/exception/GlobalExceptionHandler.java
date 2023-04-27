@@ -3,6 +3,7 @@ package com.cgz.ticketing.common.exception;
 import com.cgz.ticketing.common.resp.CommonResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +29,7 @@ public class GlobalExceptionHandler {
     /**
      * 应用异常统一处理
      */
-    @ExceptionHandler(value = AppException.class)
+    @ExceptionHandler(AppException.class)
     @ResponseBody
     public CommonResp<Object> exceptionHandler(AppException e) {
         LOG.error("应用程序异常：{}", e.getE().getErrMsg());
@@ -38,14 +39,13 @@ public class GlobalExceptionHandler {
     /**
      * 校验异常统一处理
      */
-    /*@ExceptionHandler(value = BindException.class)
+    @ExceptionHandler(BindException.class)
     @ResponseBody
-    public CommonResp exceptionHandler(BindException e) {
-        CommonResp commonResp = new CommonResp();
-        LOG.error("校验异常：{}", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
-        commonResp.setSuccess(false);
-        commonResp.setMessage(e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
-        return commonResp;
-    }*/
+    public CommonResp<Object> exceptionHandler(BindException e) {
+        StringBuilder msg = new StringBuilder();
+        e.getBindingResult().getAllErrors().forEach(v->msg.append(v.getDefaultMessage()).append("; "));
+        LOG.error("校验异常：{}", msg);
+        return new CommonResp<>(false,msg.toString());
+    }
 
 }

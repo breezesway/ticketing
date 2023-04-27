@@ -2,7 +2,7 @@ package com.cgz.ticketing.common.exception;
 
 public class AppException extends RuntimeException{
 
-    private AppExceptionEnum e;
+    private final AppExceptionEnum e;
 
     public AppException(AppExceptionEnum e) {
         this.e = e;
