@@ -1,4 +1,4 @@
-package com.cgz.ticketing.common.controller;
+package com.cgz.ticketing.common.exception;
 
 import com.cgz.ticketing.common.resp.CommonResp;
 import org.slf4j.Logger;
@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 统一异常处理、数据预处理等
  */
 @ControllerAdvice
-public class ControllerExceptionHandler {
+public class GlobalExceptionHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ControllerExceptionHandler.class);
+    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 所有异常统一处理
      */
-    @ExceptionHandler(value = Exception.class)
+    @ExceptionHandler(Exception.class)
     @ResponseBody
     public CommonResp<Object> exceptionHandler(Exception e) {
         LOG.error("系统异常：", e);
@@ -26,17 +26,14 @@ public class ControllerExceptionHandler {
     }
 
     /**
-     * 业务异常统一处理
+     * 应用异常统一处理
      */
-    /*@ExceptionHandler(value = BusinessException.class)
+    @ExceptionHandler(value = AppException.class)
     @ResponseBody
-    public CommonResp exceptionHandler(BusinessException e) {
-        CommonResp commonResp = new CommonResp();
-        LOG.error("业务异常：{}", e.getE().getDesc());
-        commonResp.setSuccess(false);
-        commonResp.setMessage(e.getE().getDesc());
-        return commonResp;
-    }*/
+    public CommonResp<Object> exceptionHandler(AppException e) {
+        LOG.error("应用程序异常：{}", e.getE().getErrMsg());
+        return new CommonResp<>(false,e.getE().getErrMsg());
+    }
 
     /**
      * 校验异常统一处理

@@ -1,6 +1,8 @@
 package com.cgz.ticketing.member.service;
 
 import cn.hutool.core.collection.CollUtil;
+import com.cgz.ticketing.common.exception.AppException;
+import com.cgz.ticketing.common.exception.AppExceptionEnum;
 import com.cgz.ticketing.member.domain.Member;
 import com.cgz.ticketing.member.domain.MemberExample;
 import com.cgz.ticketing.member.mapper.MemberMapper;
@@ -26,8 +28,7 @@ public class MemberService {
         memberExample.createCriteria().andMobileEqualTo(mobile);
         List<Member> list = memberMapper.selectByExample(memberExample);
         if(CollUtil.isNotEmpty(list)){
-            //return list.get(0).getId();
-            throw new RuntimeException("手机号已注册");
+            throw new AppException(AppExceptionEnum.MEMBER_MOBILE_EXIST);
         }
         Member member = new Member();
         member.setId(System.currentTimeMillis());
