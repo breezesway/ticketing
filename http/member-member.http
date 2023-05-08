@@ -15,3 +15,9 @@ Content-Type: application/x-www-form-urlencoded
 mobile=12345678911
 
 ###
+POST http://localhost:8000/member/member/login
+Content-Type: application/x-www-form-urlencoded
+
+mobile=12345678911&code=1234
+
+###

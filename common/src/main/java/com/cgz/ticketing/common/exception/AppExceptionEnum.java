@@ -2,7 +2,9 @@ package com.cgz.ticketing.common.exception;
 
 public enum AppExceptionEnum {
 
-    MEMBER_MOBILE_EXIST("会员手机号已注册")
+    MEMBER_MOBILE_EXIST("手机号已注册"),
+    MEMBER_MOBILE_NOT_EXIST("手机号不存在，请先获取短信验证码"),
+    MEMBER_MOBILE_CODE_ERROR("验证码错误"),
     ;
 
     private final String errMsg;
