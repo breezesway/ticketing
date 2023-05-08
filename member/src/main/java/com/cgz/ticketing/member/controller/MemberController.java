@@ -8,10 +8,7 @@ import com.cgz.ticketing.member.resp.MemberLoginResp;
 import com.cgz.ticketing.member.service.MemberService;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/member")
@@ -31,7 +28,7 @@ public class MemberController {
     }
 
     @PostMapping("/sendCode")
-    public CommonResp<Long> sendCode(@Validated MemberSendCodeReq req){
+    public CommonResp<Long> sendCode(@Validated @RequestBody MemberSendCodeReq req){
         memberService.sendCode(req);
         return new CommonResp<>();
     }
