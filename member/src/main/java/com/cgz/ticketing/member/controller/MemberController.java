@@ -2,6 +2,7 @@ package com.cgz.ticketing.member.controller;
 
 import com.cgz.ticketing.common.resp.CommonResp;
 import com.cgz.ticketing.member.req.MemberRegisterReq;
+import com.cgz.ticketing.member.req.MemberSendCodeReq;
 import com.cgz.ticketing.member.service.MemberService;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -25,5 +26,11 @@ public class MemberController {
     @PostMapping("/register")
     public CommonResp<Long> register(@Validated MemberRegisterReq req){
         return new CommonResp<>(memberService.register(req));
+    }
+
+    @PostMapping("/sendCode")
+    public CommonResp<Long> sendCode(@Validated MemberSendCodeReq req){
+        memberService.sendCode(req);
+        return new CommonResp<>();
     }
 }
