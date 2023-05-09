@@ -4,9 +4,10 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.jwt.JWTUtil;
 import com.cgz.ticketing.common.exception.AppException;
 import com.cgz.ticketing.common.exception.AppExceptionEnum;
+import com.cgz.ticketing.common.util.JwtUtil;
+import com.cgz.ticketing.common.util.SnowUtil;
 import com.cgz.ticketing.member.domain.Member;
 import com.cgz.ticketing.member.domain.MemberExample;
 import com.cgz.ticketing.member.mapper.MemberMapper;
@@ -14,14 +15,12 @@ import com.cgz.ticketing.member.req.MemberLoginReq;
 import com.cgz.ticketing.member.req.MemberRegisterReq;
 import com.cgz.ticketing.member.req.MemberSendCodeReq;
 import com.cgz.ticketing.member.resp.MemberLoginResp;
-import com.cgz.ticketing.member.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class MemberService {
@@ -84,12 +83,11 @@ public class MemberService {
         if(!"8888".equals(code)){
             throw new AppException(AppExceptionEnum.MEMBER_MOBILE_CODE_ERROR);
         }
+
         MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
 
         //生成JWT
-        Map<String, Object> payloadMap = BeanUtil.beanToMap(memberLoginResp);
-        String key = "cgzticketing";
-        String token = JWTUtil.createToken(payloadMap, key.getBytes());
+        String token = JwtUtil.createToken(memberLoginResp.getId(), memberLoginResp.getMobile());
         memberLoginResp.setToken(token);
 
         return memberLoginResp;

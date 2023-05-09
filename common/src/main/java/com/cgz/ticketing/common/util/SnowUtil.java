@@ -1,4 +1,4 @@
-package com.cgz.ticketing.member.util;
+package com.cgz.ticketing.common.util;
 
 import cn.hutool.core.util.IdUtil;
 
