@@ -1,11 +1,11 @@
-package com.cgz.ticketing.member.domain;
+package com.cgz.ticketing.member.req;
 
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-public class Passenger {
+public class PassengerSaveReq {
     private Long id;
 
     private Long memberId;
