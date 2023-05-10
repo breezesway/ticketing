@@ -61,7 +61,7 @@ public class MemberService {
         }
 
         //生成验证码
-        String code = RandomUtil.randomString(4);
+        String code = RandomUtil.randomNumbers(6);
         LOG.info("生成短信验证码： {}", code);
         //保存短信记录表：手机号，短信验证码，有效期，是否已使用，业务类型，发送时间，使用时间
         LOG.info("保存短信记录表");
