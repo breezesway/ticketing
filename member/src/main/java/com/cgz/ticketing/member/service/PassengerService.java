@@ -11,6 +11,7 @@ import com.cgz.ticketing.member.mapper.PassengerMapper;
 import com.cgz.ticketing.member.req.PassengerQueryReq;
 import com.cgz.ticketing.member.req.PassengerSaveReq;
 import com.cgz.ticketing.member.resp.PassengerQueryResp;
+import com.github.pagehelper.PageHelper;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class PassengerService {
         if (ObjectUtil.isNotNull(req.getMemberId())){
             criteria.andMemberIdEqualTo(req.getMemberId());
         }
+        PageHelper.startPage(req.getPage(), req.getSize());
         List<Passenger> passengerList = passengerMapper.selectByExample(passengerExample);
         return BeanUtil.copyToList(passengerList, PassengerQueryResp.class);
     }
