@@ -40,6 +40,12 @@ export default defineComponent({
             updateTime: undefined,
         });
         const passengers = ref([]);
+        // 分页的三个属性名是固定的
+        const pagination = reactive({
+            total: 0,
+            current: 1,
+            pageSize: 2,
+        });
         const columns = [{
             title: '姓名',
             dataIndex: 'name',
@@ -80,6 +86,7 @@ export default defineComponent({
                 let data = response.data;
                 if (data.success) {
                     passengers.value = data.content.list;
+                    pagination.total = data.content.total;
                 } else {
                     notification.error({description: data.message});
                 }
@@ -99,6 +106,7 @@ export default defineComponent({
             showModal,
             handleOk,
             passengers,
+            pagination,
             columns
         };
     },
