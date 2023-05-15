@@ -65,4 +65,8 @@ public class PassengerService {
         List<PassengerQueryResp> list = BeanUtil.copyToList(passengerList, PassengerQueryResp.class);
         return new PageResp<>(pageInfo.getTotal(), list);
     }
+
+    public void delete(Long id) {
+        passengerMapper.deleteByPrimaryKey(id);
+    }
 }
