@@ -18,7 +18,7 @@ public class PassengerController {
     @Resource
     private PassengerService passengerService;
 
-    @PostMapping("/save")
+    @PostMapping("/save") //新增、编辑乘车人都是该接口
     public CommonResp<Object> save(@Validated @RequestBody PassengerSaveReq req){
         passengerService.save(req);
         return new CommonResp<>();
