@@ -22,7 +22,7 @@
                 >
                     <a-input v-model:value="loginForm.code">
                         <template #addonAfter>
-                            <a @click="sendCode">获取验证码</a>
+                            <a @click="sendCode" :style="{color:loginForm.isWait?'gray':'#1890ff'}">获取验证码<span v-if="loginForm.isWait">{{`(${loginForm.waitTime})`}}</span></a>
                         </template>
                     </a-input>
                     <!--<a-input v-model:value="loginForm.code" placeholder="验证码"/>-->
@@ -51,8 +51,22 @@ export default defineComponent({
         const loginForm = reactive({
             mobile: '12345678911',
             code: '',
+            isWait: false,
+            waitTime: 0
         });
         const sendCode = () => {
+            if(loginForm.isWait)    return;
+            loginForm.waitTime=60;
+            loginForm.isWait=true;
+            let timer=()=>setTimeout(function(){
+                loginForm.waitTime--;
+                if(loginForm.waitTime<=0){
+                    clearTimeout(timer);
+                    loginForm.isWait=false
+                }
+                else   timer(); 
+            },1000)
+            timer();
             axios.post("/member/member/sendCode", {
                 mobile: loginForm.mobile
             }).then(response => {
