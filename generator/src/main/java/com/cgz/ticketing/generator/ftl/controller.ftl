@@ -1,12 +1,12 @@
-package com.cgz.ticketing.member.controller;
+package com.cgz.ticketing.${module}.controller;
 
 import com.cgz.ticketing.common.context.LoginMemberContext;
 import com.cgz.ticketing.common.resp.CommonResp;
 import com.cgz.ticketing.common.resp.PageResp;
-import com.cgz.ticketing.member.req.${Domain}QueryReq;
-import com.cgz.ticketing.member.req.${Domain}SaveReq;
-import com.cgz.ticketing.member.resp.${Domain}QueryResp;
-import com.cgz.ticketing.member.service.${Domain}Service;
+import com.cgz.ticketing.${module}.req.${Domain}QueryReq;
+import com.cgz.ticketing.${module}.req.${Domain}SaveReq;
+import com.cgz.ticketing.${module}.resp.${Domain}QueryResp;
+import com.cgz.ticketing.${module}.service.${Domain}Service;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

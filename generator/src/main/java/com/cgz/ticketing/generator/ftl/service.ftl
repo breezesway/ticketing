@@ -1,4 +1,4 @@
-package com.cgz.ticketing.member.service;
+package com.cgz.ticketing.${module}.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
@@ -8,12 +8,12 @@ import com.github.pagehelper.PageInfo;
 import com.cgz.ticketing.common.context.LoginMemberContext;
 import com.cgz.ticketing.common.resp.PageResp;
 import com.cgz.ticketing.common.util.SnowUtil;
-import com.cgz.ticketing.member.domain.${Domain};
-import com.cgz.ticketing.member.domain.${Domain}Example;
-import com.cgz.ticketing.member.mapper.${Domain}Mapper;
-import com.cgz.ticketing.member.req.${Domain}QueryReq;
-import com.cgz.ticketing.member.req.${Domain}SaveReq;
-import com.cgz.ticketing.member.resp.${Domain}QueryResp;
+import com.cgz.ticketing.${module}.domain.${Domain};
+import com.cgz.ticketing.${module}.domain.${Domain}Example;
+import com.cgz.ticketing.${module}.mapper.${Domain}Mapper;
+import com.cgz.ticketing.${module}.req.${Domain}QueryReq;
+import com.cgz.ticketing.${module}.req.${Domain}SaveReq;
+import com.cgz.ticketing.${module}.resp.${Domain}QueryResp;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

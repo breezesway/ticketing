@@ -1,4 +1,4 @@
-package com.cgz.ticketing.member.req;
+package com.cgz.ticketing.${module}.req;
 
 <#list typeSet as type>
 <#if type=='Date'>
