@@ -1,4 +1,4 @@
-package com.cgz.ticketing.generator.server;
+package com.cgz.ticketing.generator.gen;
 
 import com.cgz.ticketing.generator.util.DbUtil;
 import com.cgz.ticketing.generator.util.Field;
