@@ -1,4 +1,4 @@
-package com.cgz.ticketing.${module}.controller;
+package com.cgz.ticketing.${module}.controller.admin;
 
 import com.cgz.ticketing.common.context.LoginMemberContext;
 import com.cgz.ticketing.common.resp.CommonResp;
@@ -12,8 +12,8 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/${do_main}")
-public class ${Domain}Controller {
+@RequestMapping("/admin/${do_main}")
+public class ${Domain}AdminController {
 
     @Resource
     private ${Domain}Service ${domain}Service;
