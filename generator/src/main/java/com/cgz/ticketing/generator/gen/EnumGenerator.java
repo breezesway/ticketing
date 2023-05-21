@@ -1,6 +1,7 @@
 package com.cgz.ticketing.generator.gen;
 
 import cn.hutool.core.util.StrUtil;
+import com.cgz.ticketing.business.enums.SeatColEnum;
 import com.cgz.ticketing.business.enums.SeatTypeEnum;
 import com.cgz.ticketing.business.enums.TrainTypeEnum;
 import com.cgz.ticketing.member.enums.PassengerTypeEnum;
@@ -21,6 +22,7 @@ public class EnumGenerator {
             toJson(PassengerTypeEnum.class, bufferObject, bufferArray);
             toJson(TrainTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
+            toJson(SeatColEnum.class, bufferObject, bufferArray);
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
