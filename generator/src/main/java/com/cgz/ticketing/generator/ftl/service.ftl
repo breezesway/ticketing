@@ -58,10 +58,7 @@ public class ${Domain}Service {
 
         List<${Domain}QueryResp> list = BeanUtil.copyToList(${domain}List, ${Domain}QueryResp.class);
 
-        PageResp<${Domain}QueryResp> pageResp = new PageResp<>();
-        pageResp.setTotal(pageInfo.getTotal());
-        pageResp.setList(list);
-        return pageResp;
+        return new PageResp<>(pageInfo.getTotal(), list);
     }
 
     public void delete(Long id) {
