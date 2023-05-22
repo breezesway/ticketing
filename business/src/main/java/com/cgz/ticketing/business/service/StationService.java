@@ -3,16 +3,16 @@ package com.cgz.ticketing.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.cgz.ticketing.common.resp.PageResp;
-import com.cgz.ticketing.common.util.SnowUtil;
 import com.cgz.ticketing.business.domain.Station;
 import com.cgz.ticketing.business.domain.StationExample;
 import com.cgz.ticketing.business.mapper.StationMapper;
 import com.cgz.ticketing.business.req.StationQueryReq;
 import com.cgz.ticketing.business.req.StationSaveReq;
 import com.cgz.ticketing.business.resp.StationQueryResp;
+import com.cgz.ticketing.common.resp.PageResp;
+import com.cgz.ticketing.common.util.SnowUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,5 +63,13 @@ public class StationService {
 
     public void delete(Long id) {
         stationMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<StationQueryResp> queryAll() {
+        StationExample stationExample = new StationExample();
+        stationExample.setOrderByClause("name_pinyin asc");
+        List<Station> stationList = stationMapper.selectByExample(stationExample);
+
+        return BeanUtil.copyToList(stationList, StationQueryResp.class);
     }
 }
