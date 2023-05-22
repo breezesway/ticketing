@@ -8,4 +8,5 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TrainStationQueryReq extends PageReq {
 
+    private String trainCode;
 }
