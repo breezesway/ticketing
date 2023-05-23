@@ -3,6 +3,7 @@ package com.cgz.ticketing.business.controller.admin;
 import com.cgz.ticketing.business.req.TrainQueryReq;
 import com.cgz.ticketing.business.req.TrainSaveReq;
 import com.cgz.ticketing.business.resp.TrainQueryResp;
+import com.cgz.ticketing.business.service.TrainSeatService;
 import com.cgz.ticketing.business.service.TrainService;
 import com.cgz.ticketing.common.resp.CommonResp;
 import com.cgz.ticketing.common.resp.PageResp;
@@ -18,6 +19,9 @@ public class TrainAdminController {
 
     @Resource
     private TrainService trainService;
+
+    @Resource
+    private TrainSeatService trainSeatService;
 
     @PostMapping("/save")
     public CommonResp<Object> save(@Valid @RequestBody TrainSaveReq req) {
@@ -41,6 +45,12 @@ public class TrainAdminController {
     public CommonResp<List<TrainQueryResp>> queryList() {
         List<TrainQueryResp> list = trainService.queryAll();
         return new CommonResp<>(list);
+    }
+
+    @GetMapping("/gen-seat/{trainCode}")
+    public CommonResp<Object> delete(@PathVariable String trainCode) {
+        trainSeatService.genTrainSeat(trainCode);
+        return new CommonResp<>();
     }
 
 }

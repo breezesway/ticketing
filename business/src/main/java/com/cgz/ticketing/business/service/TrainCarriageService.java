@@ -3,16 +3,16 @@ package com.cgz.ticketing.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.cgz.ticketing.common.resp.PageResp;
-import com.cgz.ticketing.common.util.SnowUtil;
 import com.cgz.ticketing.business.domain.TrainCarriage;
 import com.cgz.ticketing.business.domain.TrainCarriageExample;
 import com.cgz.ticketing.business.mapper.TrainCarriageMapper;
 import com.cgz.ticketing.business.req.TrainCarriageQueryReq;
 import com.cgz.ticketing.business.req.TrainCarriageSaveReq;
 import com.cgz.ticketing.business.resp.TrainCarriageQueryResp;
+import com.cgz.ticketing.common.resp.PageResp;
+import com.cgz.ticketing.common.util.SnowUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,5 +66,13 @@ public class TrainCarriageService {
 
     public void delete(Long id) {
         trainCarriageMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<TrainCarriage> selectByTrainCode(String trainCode){
+        TrainCarriageExample trainCarriageExample = new TrainCarriageExample();
+        trainCarriageExample.setOrderByClause("`index` asc");
+        TrainCarriageExample.Criteria criteria = trainCarriageExample.createCriteria();
+        criteria.andTrainCodeEqualTo(trainCode);
+        return trainCarriageMapper.selectByExample(trainCarriageExample);
     }
 }
