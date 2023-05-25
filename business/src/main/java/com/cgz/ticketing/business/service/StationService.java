@@ -1,6 +1,7 @@
 package com.cgz.ticketing.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
 import com.cgz.ticketing.business.domain.Station;
@@ -9,6 +10,8 @@ import com.cgz.ticketing.business.mapper.StationMapper;
 import com.cgz.ticketing.business.req.StationQueryReq;
 import com.cgz.ticketing.business.req.StationSaveReq;
 import com.cgz.ticketing.business.resp.StationQueryResp;
+import com.cgz.ticketing.common.exception.AppException;
+import com.cgz.ticketing.common.exception.AppExceptionEnum;
 import com.cgz.ticketing.common.resp.PageResp;
 import com.cgz.ticketing.common.util.SnowUtil;
 import com.github.pagehelper.PageHelper;
@@ -32,6 +35,14 @@ public class StationService {
         DateTime now = DateTime.now();
         Station station = BeanUtil.copyProperties(req, Station.class);
         if (ObjectUtil.isNull(station.getId())) {
+            //校验唯一键
+            StationExample stationExample = new StationExample();
+            stationExample.createCriteria().andNameEqualTo(req.getName());
+            List<Station> list = stationMapper.selectByExample(stationExample);
+            if(CollUtil.isEmpty(list)){
+                throw new AppException(AppExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
+            }
+
             station.setId(SnowUtil.getSnowflakeNextId());
             station.setCreateTime(now);
             station.setUpdateTime(now);
