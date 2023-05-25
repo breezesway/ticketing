@@ -1,14 +1,16 @@
 package com.cgz.ticketing.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjectUtil;
+import com.cgz.ticketing.business.domain.*;
+import com.cgz.ticketing.common.exception.AppException;
+import com.cgz.ticketing.common.exception.AppExceptionEnum;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.cgz.ticketing.common.resp.PageResp;
 import com.cgz.ticketing.common.util.SnowUtil;
-import com.cgz.ticketing.business.domain.Train;
-import com.cgz.ticketing.business.domain.TrainExample;
 import com.cgz.ticketing.business.mapper.TrainMapper;
 import com.cgz.ticketing.business.req.TrainQueryReq;
 import com.cgz.ticketing.business.req.TrainSaveReq;
@@ -32,6 +34,12 @@ public class TrainService {
         DateTime now = DateTime.now();
         Train train = BeanUtil.copyProperties(req, Train.class);
         if (ObjectUtil.isNull(train.getId())) {
+            //校验唯一键
+            Train trainDB = selectByUnique(req.getCode());
+            if(ObjectUtil.isNotEmpty(trainDB)){
+                throw new AppException(AppExceptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
+            }
+
             train.setId(SnowUtil.getSnowflakeNextId());
             train.setCreateTime(now);
             train.setUpdateTime(now);
@@ -39,6 +47,17 @@ public class TrainService {
         } else {
             train.setUpdateTime(now);
             trainMapper.updateByPrimaryKey(train);
+        }
+    }
+
+    private Train selectByUnique(String code) {
+        TrainExample trainExample = new TrainExample();
+        trainExample.createCriteria().andCodeEqualTo(code);
+        List<Train> list = trainMapper.selectByExample(trainExample);
+        if(CollUtil.isNotEmpty(list)){
+            return list.get(0);
+        }else {
+            return null;
         }
     }
 
