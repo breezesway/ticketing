@@ -22,19 +22,19 @@ import java.util.List;
 @RequestMapping(value = "/admin/job")
 public class JobController {
 
-    private static Logger LOG = LoggerFactory.getLogger(JobController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JobController.class);
 
     @Autowired
     private SchedulerFactoryBean schedulerFactoryBean;
 
     @RequestMapping(value = "/add")
-    public CommonResp add(@RequestBody CronJobReq cronJobReq) {
+    public CommonResp<Object> add(@RequestBody CronJobReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
         String cronExpression = cronJobReq.getCronExpression();
         String description = cronJobReq.getDescription();
         LOG.info("创建定时任务开始：{}，{}，{}，{}", jobClassName, jobGroupName, cronExpression, description);
-        CommonResp commonResp = new CommonResp();
+        CommonResp<Object> commonResp = new CommonResp<>();
 
         try {
             // 通过SchedulerFactory获取一个调度器实例
@@ -68,11 +68,11 @@ public class JobController {
     }
 
     @RequestMapping(value = "/pause")
-    public CommonResp pause(@RequestBody CronJobReq cronJobReq) {
+    public CommonResp<Object> pause(@RequestBody CronJobReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
         LOG.info("暂停定时任务开始：{}，{}", jobClassName, jobGroupName);
-        CommonResp commonResp = new CommonResp();
+        CommonResp<Object> commonResp = new CommonResp<>();
         try {
             Scheduler sched = schedulerFactoryBean.getScheduler();
             sched.pauseJob(JobKey.jobKey(jobClassName, jobGroupName));
@@ -86,11 +86,11 @@ public class JobController {
     }
 
     @RequestMapping(value = "/resume")
-    public CommonResp resume(@RequestBody CronJobReq cronJobReq) {
+    public CommonResp<Object> resume(@RequestBody CronJobReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
         LOG.info("重启定时任务开始：{}，{}", jobClassName, jobGroupName);
-        CommonResp commonResp = new CommonResp();
+        CommonResp<Object> commonResp = new CommonResp<>();
         try {
             Scheduler sched = schedulerFactoryBean.getScheduler();
             sched.resumeJob(JobKey.jobKey(jobClassName, jobGroupName));
@@ -104,13 +104,13 @@ public class JobController {
     }
 
     @RequestMapping(value = "/reschedule")
-    public CommonResp reschedule(@RequestBody CronJobReq cronJobReq) {
+    public CommonResp<Object> reschedule(@RequestBody CronJobReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
         String cronExpression = cronJobReq.getCronExpression();
         String description = cronJobReq.getDescription();
         LOG.info("更新定时任务开始：{}，{}，{}，{}", jobClassName, jobGroupName, cronExpression, description);
-        CommonResp commonResp = new CommonResp();
+        CommonResp<Object> commonResp = new CommonResp<>();
         try {
             Scheduler scheduler = schedulerFactoryBean.getScheduler();
             TriggerKey triggerKey = TriggerKey.triggerKey(jobClassName, jobGroupName);
@@ -135,11 +135,11 @@ public class JobController {
     }
 
     @RequestMapping(value = "/delete")
-    public CommonResp delete(@RequestBody CronJobReq cronJobReq) {
+    public CommonResp<Object> delete(@RequestBody CronJobReq cronJobReq) {
         String jobClassName = cronJobReq.getName();
         String jobGroupName = cronJobReq.getGroup();
         LOG.info("删除定时任务开始：{}，{}", jobClassName, jobGroupName);
-        CommonResp commonResp = new CommonResp();
+        CommonResp<Object> commonResp = new CommonResp<>();
         try {
             Scheduler scheduler = schedulerFactoryBean.getScheduler();
             scheduler.pauseTrigger(TriggerKey.triggerKey(jobClassName, jobGroupName));
@@ -155,10 +155,10 @@ public class JobController {
     }
 
     @RequestMapping(value="/query")
-    public CommonResp query() {
+    public CommonResp<Object> query() {
         LOG.info("查看所有定时任务开始");
-        CommonResp commonResp = new CommonResp();
-        List<CronJobResp> cronJobDtoList = new ArrayList();
+        CommonResp<Object> commonResp = new CommonResp<>();
+        List<CronJobResp> cronJobDtoList = new ArrayList<>();
         try {
             Scheduler scheduler = schedulerFactoryBean.getScheduler();
             for (String groupName : scheduler.getJobGroupNames()) {
