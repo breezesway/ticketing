@@ -1,6 +1,8 @@
 <template>
     <p>
         <a-space>
+            <a-date-picker v-model:value="params.date" valueFormat="YYYY-MM-DD" placeholder="请选择日期" />
+            <train-select-view v-model="params.code" width="200px"></train-select-view>
             <a-button type="primary" @click="handleQuery()">刷新</a-button>
             <a-button type="primary" @click="onAdd">新增</a-button>
         </a-space>
@@ -14,9 +16,9 @@
             <template v-if="column.dataIndex === 'operation'">
                 <a-space>
                     <a-popconfirm
-                            title="删除后不可恢复，确认删除?"
-                            @confirm="onDelete(record)"
-                            ok-text="确认" cancel-text="取消">
+                        title="删除后不可恢复，确认删除?"
+                        @confirm="onDelete(record)"
+                        ok-text="确认" cancel-text="取消">
                         <a style="color: red">删除</a>
                     </a-popconfirm>
                     <a @click="onEdit(record)">编辑</a>
@@ -103,6 +105,9 @@ export default defineComponent({
             pageSize: 10,
         });
         let loading = ref(false);
+        let params = ref({
+            code: null
+        });
         const columns = [
             {
                 title: '日期',
@@ -207,7 +212,9 @@ export default defineComponent({
             axios.get("/business/admin/daily-train/query-list", {
                 params: {
                     page: param.page,
-                    size: param.size
+                    size: param.size,
+                    code: params.value.code,
+                    date: params.value.date
                 }
             }).then((response) => {
                 loading.value = false;
@@ -260,7 +267,8 @@ export default defineComponent({
             handleOk,
             onEdit,
             onDelete,
-            onChangeCode
+            onChangeCode,
+            params
         };
     },
 });
