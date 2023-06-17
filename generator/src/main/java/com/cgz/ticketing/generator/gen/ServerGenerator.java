@@ -17,7 +17,7 @@ public class ServerGenerator {
     static boolean readOnly = false;
     static String vuePath = "admin/src/views/main/";
     static String serverPath = "[module]/src/main/java/com/cgz/ticketing/[module]/";
-    static String pomPath = "generator\\pom.xml";
+    static String pomPath = "generator/pom.xml";
     static String module = "";
 
     static {
