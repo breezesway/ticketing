@@ -8,11 +8,11 @@
     <result column="start" jdbcType="VARCHAR" property="start" />
     <result column="start_pinyin" jdbcType="VARCHAR" property="startPinyin" />
     <result column="start_time" jdbcType="TIME" property="startTime" />
-    <result column="start_index" jdbcType="TINYINT" property="startIndex" />
+    <result column="start_index" jdbcType="INTEGER" property="startIndex" />
     <result column="end" jdbcType="VARCHAR" property="end" />
     <result column="end_pinyin" jdbcType="VARCHAR" property="endPinyin" />
     <result column="end_time" jdbcType="TIME" property="endTime" />
-    <result column="end_index" jdbcType="TINYINT" property="endIndex" />
+    <result column="end_index" jdbcType="INTEGER" property="endIndex" />
     <result column="ydz" jdbcType="INTEGER" property="ydz" />
     <result column="ydz_price" jdbcType="DECIMAL" property="ydzPrice" />
     <result column="edz" jdbcType="INTEGER" property="edz" />
