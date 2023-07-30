@@ -2,7 +2,7 @@
     <a-layout-header class="header">
         <div class="logo">
             <router-link to="/welcome" style="color: white; font-size: 18px">
-                My购票系统
+                12306
             </router-link>
         </div>
         <div style="float: right; color: white;">
@@ -27,13 +27,17 @@
                     <user-outlined /> &nbsp; 乘车人管理
                 </router-link>
             </a-menu-item>
+            <a-menu-item key="/ticket">
+                <router-link to="/ticket">
+                    <user-outlined /> &nbsp; 余票查询
+                </router-link>
+            </a-menu-item>
         </a-menu>
-        <div>{{}}</div>
     </a-layout-header>
 </template>
 
 <script>
-import {defineComponent, ref, watch } from 'vue';
+import {defineComponent, ref, watch} from 'vue';
 import store from "@/store";
 import router from '@/router'
 
@@ -41,7 +45,6 @@ export default defineComponent({
     name: "the-header-view",
     setup() {
         let member = store.state.member;
-
         const selectedKeys = ref([]);
 
         watch(() => router.currentRoute.value.path, (newValue) => {
