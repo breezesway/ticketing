@@ -182,6 +182,10 @@ export default defineComponent({
                     size: pagination.value.pageSize
                 };
             }
+
+            // 保存查询参数
+            SessionStorage.set(SESSION_TICKET_PARAMS, params.value);
+
             loading.value = true;
             axios.get("/business/daily-train-ticket/query-list", {
                 params: {
