@@ -1,6 +1,8 @@
 package com.cgz.ticketing.generator.gen;
 
+
 import cn.hutool.core.util.StrUtil;
+import com.cgz.ticketing.business.enums.ConfirmOrderStatusEnum;
 import com.cgz.ticketing.business.enums.SeatColEnum;
 import com.cgz.ticketing.business.enums.SeatTypeEnum;
 import com.cgz.ticketing.business.enums.TrainTypeEnum;
@@ -12,14 +14,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EnumGenerator {
-    static String path = "web/src/assets/js/enums.js";
-    // static String path = "admin/src/assets/js/enums.js";
-
+    // static String path = "web/src/assets/js/enums.js";
+    static String path = "admin/src/assets/js/enums.js";
 
     public static void main(String[] args) {
         StringBuffer bufferObject = new StringBuffer();
@@ -30,6 +30,7 @@ public class EnumGenerator {
             toJson(TrainTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatTypeEnum.class, bufferObject, bufferArray);
             toJson(SeatColEnum.class, bufferObject, bufferArray);
+            toJson(ConfirmOrderStatusEnum.class, bufferObject, bufferArray);
 
             StringBuffer buffer = bufferObject.append("\r\n").append(bufferArray);
             writeJs(buffer);
@@ -108,12 +109,13 @@ public class EnumGenerator {
 
     /**
      * 写文件
+     * @param stringBuffer
      */
     public static void writeJs(StringBuffer stringBuffer) {
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(path);
-            OutputStreamWriter osw = new OutputStreamWriter(out, StandardCharsets.UTF_8);
+            OutputStreamWriter osw = new OutputStreamWriter(out, "UTF-8");
             System.out.println(path);
             osw.write(stringBuffer.toString());
             osw.close();
@@ -129,4 +131,5 @@ public class EnumGenerator {
 
         }
     }
+
 }
