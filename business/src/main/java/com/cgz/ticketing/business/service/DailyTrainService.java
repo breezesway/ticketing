@@ -5,17 +5,17 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.cgz.ticketing.business.domain.Train;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.cgz.ticketing.common.resp.PageResp;
-import com.cgz.ticketing.common.util.SnowUtil;
 import com.cgz.ticketing.business.domain.DailyTrain;
 import com.cgz.ticketing.business.domain.DailyTrainExample;
+import com.cgz.ticketing.business.domain.Train;
 import com.cgz.ticketing.business.mapper.DailyTrainMapper;
 import com.cgz.ticketing.business.req.DailyTrainQueryReq;
 import com.cgz.ticketing.business.req.DailyTrainSaveReq;
 import com.cgz.ticketing.business.resp.DailyTrainQueryResp;
+import com.cgz.ticketing.common.resp.PageResp;
+import com.cgz.ticketing.common.util.SnowUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,7 +125,7 @@ public class DailyTrainService {
         // 生成该车次的座位数据
         dailyTrainSeatService.genDaily(date, train.getCode());
         // 生成该车次的余票数据
-        dailyTrainTicketService.genDaily(date, train.getCode());
+        dailyTrainTicketService.genDaily(dailyTrain, date, train.getCode());
 
         LOG.info("生成日期【{}】车次【{}】的信息结束", DateUtil.formatDate(date), train.getCode());
     }
