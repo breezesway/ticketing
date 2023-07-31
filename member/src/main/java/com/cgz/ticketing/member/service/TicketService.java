@@ -2,17 +2,16 @@ package com.cgz.ticketing.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
-import cn.hutool.core.util.ObjectUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import com.cgz.ticketing.common.req.MemberTicketReq;
 import com.cgz.ticketing.common.resp.PageResp;
 import com.cgz.ticketing.common.util.SnowUtil;
 import com.cgz.ticketing.member.domain.Ticket;
 import com.cgz.ticketing.member.domain.TicketExample;
 import com.cgz.ticketing.member.mapper.TicketMapper;
 import com.cgz.ticketing.member.req.TicketQueryReq;
-import com.cgz.ticketing.member.req.TicketSaveReq;
 import com.cgz.ticketing.member.resp.TicketQueryResp;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,18 +27,16 @@ public class TicketService {
     @Resource
     private TicketMapper ticketMapper;
 
-    public void save(TicketSaveReq req) {
+    /**
+     * 会员购买车票后新增保存
+     */
+    public void save(MemberTicketReq req) {
         DateTime now = DateTime.now();
         Ticket ticket = BeanUtil.copyProperties(req, Ticket.class);
-        if (ObjectUtil.isNull(ticket.getId())) {
-            ticket.setId(SnowUtil.getSnowflakeNextId());
-            ticket.setCreateTime(now);
-            ticket.setUpdateTime(now);
-            ticketMapper.insert(ticket);
-        } else {
-            ticket.setUpdateTime(now);
-            ticketMapper.updateByPrimaryKey(ticket);
-        }
+        ticket.setId(SnowUtil.getSnowflakeNextId());
+        ticket.setCreateTime(now);
+        ticket.setUpdateTime(now);
+        ticketMapper.insert(ticket);
     }
 
     public PageResp<TicketQueryResp> queryList(TicketQueryReq req) {
@@ -59,9 +56,5 @@ public class TicketService {
         List<TicketQueryResp> list = BeanUtil.copyToList(ticketList, TicketQueryResp.class);
 
         return new PageResp<>(pageInfo.getTotal(), list);
-    }
-
-    public void delete(Long id) {
-        ticketMapper.deleteByPrimaryKey(id);
     }
 }
