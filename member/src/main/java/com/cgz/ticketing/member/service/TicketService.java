@@ -2,6 +2,7 @@ package com.cgz.ticketing.member.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.util.ObjUtil;
 import com.cgz.ticketing.common.req.MemberTicketReq;
 import com.cgz.ticketing.common.resp.PageResp;
 import com.cgz.ticketing.common.util.SnowUtil;
@@ -43,6 +44,9 @@ public class TicketService {
         TicketExample ticketExample = new TicketExample();
         ticketExample.setOrderByClause("id desc");
         TicketExample.Criteria criteria = ticketExample.createCriteria();
+        if (ObjUtil.isNotNull(req.getMemberId())) {
+            criteria.andMemberIdEqualTo(req.getMemberId());
+        }
 
         LOG.info("查询页码：{}", req.getPage());
         LOG.info("每页条数：{}", req.getSize());

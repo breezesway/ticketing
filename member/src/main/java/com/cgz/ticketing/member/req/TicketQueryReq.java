@@ -7,5 +7,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class TicketQueryReq extends PageReq {
-
+    private Long memberId;
 }
