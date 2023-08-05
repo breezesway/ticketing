@@ -1,10 +1,11 @@
 package com.cgz.ticketing.member.resp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 public class TicketQueryResp {
@@ -36,7 +37,7 @@ public class TicketQueryResp {
      * 日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
-    private Date date;
+    private Date trainDate;
 
     /**
      * 车次编号
@@ -51,17 +52,17 @@ public class TicketQueryResp {
     /**
      * 排号|01, 02
      */
-    private String row;
+    private String seatRow;
 
     /**
      * 列号|枚举[SeatColEnum]
      */
-    private String col;
+    private String seatCol;
 
     /**
      * 出发站
      */
-    private String start;
+    private String startStation;
 
     /**
      * 出发时间
@@ -72,7 +73,7 @@ public class TicketQueryResp {
     /**
      * 到达站
      */
-    private String end;
+    private String endStation;
 
     /**
      * 到站时间
