@@ -12,11 +12,12 @@ import com.cgz.ticketing.business.req.ConfirmOrderTicketReq;
 import com.cgz.ticketing.common.context.LoginMemberContext;
 import com.cgz.ticketing.common.req.MemberTicketReq;
 import com.cgz.ticketing.common.resp.CommonResp;
+import io.seata.core.context.RootContext;
+import io.seata.spring.annotation.GlobalTransactional;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -42,8 +43,9 @@ public class AfterConfirmOrderService {
      *  为会员增加购票记录
      *  更新确认订单为成功
      */
-    @Transactional
-    public void afterDoConfirm(DailyTrainTicket dailyTrainTicket, List<DailyTrainSeat> finalSeatList, List<ConfirmOrderTicketReq> tickets, ConfirmOrder confirmOrder) {
+    @GlobalTransactional
+    public void afterDoConfirm(DailyTrainTicket dailyTrainTicket, List<DailyTrainSeat> finalSeatList, List<ConfirmOrderTicketReq> tickets, ConfirmOrder confirmOrder) throws Exception {
+        LOG.info("seata全局事务ID: {}", RootContext.getXID());
         for (int j = 0; j < finalSeatList.size(); j++) {
             DailyTrainSeat dailyTrainSeat = finalSeatList.get(j);
             DailyTrainSeat seatForUpdate = new DailyTrainSeat();
@@ -124,6 +126,11 @@ public class AfterConfirmOrderService {
             confirmOrderForUpdate.setUpdateTime(new Date());
             confirmOrderForUpdate.setStatus(ConfirmOrderStatusEnum.SUCCESS.getCode());
             confirmOrderMapper.updateByPrimaryKeySelective(confirmOrderForUpdate);
+
+            // 模拟调用方出现异常
+            if (1 == 1) {
+                throw new Exception("测试异常");
+            }
         }
     }
 }
