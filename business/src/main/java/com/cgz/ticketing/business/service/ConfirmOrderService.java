@@ -8,6 +8,7 @@ import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.fastjson.JSON;
 import com.cgz.ticketing.business.domain.*;
 import com.cgz.ticketing.business.enums.ConfirmOrderStatusEnum;
@@ -97,6 +98,7 @@ public class ConfirmOrderService {
         confirmOrderMapper.deleteByPrimaryKey(id);
     }
 
+    @SentinelResource("doConfirm")
     public void doConfirm(ConfirmOrderDoReq req) {
         String lockKey = DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
         // setIfAbsent就是对应redis的setnx
