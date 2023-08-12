@@ -9,6 +9,7 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.cgz.ticketing.business.domain.*;
 import com.cgz.ticketing.business.enums.ConfirmOrderStatusEnum;
@@ -98,7 +99,7 @@ public class ConfirmOrderService {
         confirmOrderMapper.deleteByPrimaryKey(id);
     }
 
-    @SentinelResource("doConfirm")
+    @SentinelResource(value = "doConfirm", blockHandler = "doConfirmBlock")
     public void doConfirm(ConfirmOrderDoReq req) {
         String lockKey = DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
         // setIfAbsent就是对应redis的setnx
@@ -440,5 +441,13 @@ public class ConfirmOrderService {
             return true;
 
         }
+    }
+
+    /**
+     * 降级方法，需包含限流方法的所有参数和BlockException参数
+     */
+    public void doConfirmBlock(ConfirmOrderDoReq req, BlockException e) {
+        LOG.info("购票请求被限流：{}", req);
+        throw new AppException(AppExceptionEnum.CONFIRM_ORDER_FLOW_EXCEPTION);
     }
 }
