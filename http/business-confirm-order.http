@@ -1,0 +1,18 @@
+POST http://localhost:8000/business/confirm-order/do
+Content-Type: application/json
+token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTE4MjUwMjMsIm1vYmlsZSI6IjEyMzQ1Njc4OTExIiwiaWQiOjE2ODU0OTQ1NTY5OTQ0NDEyMTYsImV4cCI6MTY5MTkxMTQyMywiaWF0IjoxNjkxODI1MDIzfQ.ztDJ46TRgxoK0j97w7RglHyG_9HrKHSizBmo-lnLxkk
+
+{
+  "dailyTrainTicketId":1687760777555087360,
+  "date":1691769600000,
+  "end":"深圳",
+  "start":"长沙",
+  "tickets":[{
+    "passengerId":1685494721146916864,
+    "passengerIdCard":"4210812359290523",
+    "passengerName":"蔡光宗",
+    "passengerType":"1",
+    "seatTypeCode":"1"
+  }],
+  "trainCode":"G101"
+}

@@ -3,6 +3,7 @@ package com.cgz.ticketing.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -27,11 +28,14 @@ import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class ConfirmOrderService {
@@ -48,6 +52,9 @@ public class ConfirmOrderService {
     private DailyTrainSeatService dailyTrainSeatService;
     @Resource
     private AfterConfirmOrderService afterConfirmOrderService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
 
     public void save(ConfirmOrderDoReq req) {
@@ -88,8 +95,15 @@ public class ConfirmOrderService {
     }
 
     public void doConfirm(ConfirmOrderDoReq req) {
-        // 省略业务数据校验，如：车次是否存在，余票是否存在，车次是否在有效期内，tickets条数>0，同乘客同车次是否已买过
-
+        String lockKey = DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
+        Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 5, TimeUnit.SECONDS);
+        if (Boolean.TRUE.equals(setIfAbsent)) {
+            LOG.info("恭喜，抢到锁了！lockKey：{}", lockKey);
+        } else {
+            // 只是没抢到锁，并不知道票抢完了没，所以提示稍候再试
+            LOG.info("很遗憾，没抢到锁！lockKey：{}", lockKey);
+            throw new AppException(AppExceptionEnum.CONFIRM_ORDER_LOCK_FAIL);
+        }
         Date date = req.getDate();
         String trainCode = req.getTrainCode();
         String start = req.getStart();
@@ -191,6 +205,8 @@ public class ConfirmOrderService {
             LOG.error("保存购票信息失败", e);
             throw new AppException(AppExceptionEnum.CONFIRM_ORDER_EXCEPTION);
         }
+        LOG.info("购票流程结束，释放锁！lockKey：{}", lockKey);
+        redisTemplate.delete(lockKey);
     }
 
     private static void reduceTickets(ConfirmOrderDoReq req, DailyTrainTicket dailyTrainTicket) {
@@ -270,7 +286,6 @@ public class ConfirmOrderService {
                 // 判断column，有值的话要比对列号
                 if (StrUtil.isBlank(column)) {
                     LOG.info("无选座");
-                    getSeatList.add(dailyTrainSeat);
                 } else {
                     if (!column.equals(col)) {
                         LOG.info("座位{}列值不对，继续判断下一个座位，当前列值：{}，目标列值：{}", seatIndex, col, column);
