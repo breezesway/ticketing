@@ -13,6 +13,7 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.cgz.ticketing.business.domain.*;
 import com.cgz.ticketing.business.enums.ConfirmOrderStatusEnum;
+import com.cgz.ticketing.business.enums.RedisKeyPreEnum;
 import com.cgz.ticketing.business.enums.SeatColEnum;
 import com.cgz.ticketing.business.enums.SeatTypeEnum;
 import com.cgz.ticketing.business.mapper.ConfirmOrderMapper;
@@ -114,7 +115,7 @@ public class ConfirmOrderService {
         }
 
         // 购票
-        String lockKey = DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
+        String lockKey = RedisKeyPreEnum.CONFIRM_ORDER + "-" + DateUtil.formatDate(req.getDate()) + "-" + req.getTrainCode();
         // setIfAbsent就是对应redis的setnx
         Boolean setIfAbsent = redisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 10, TimeUnit.SECONDS);
         if (Boolean.TRUE.equals(setIfAbsent)) {
