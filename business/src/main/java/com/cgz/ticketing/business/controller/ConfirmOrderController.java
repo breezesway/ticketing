@@ -3,7 +3,7 @@ package com.cgz.ticketing.business.controller;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.cgz.ticketing.business.req.ConfirmOrderDoReq;
-import com.cgz.ticketing.business.service.ConfirmOrderService;
+import com.cgz.ticketing.business.service.BeforeConfirmOrderService;
 import com.cgz.ticketing.common.exception.AppExceptionEnum;
 import com.cgz.ticketing.common.resp.CommonResp;
 import jakarta.annotation.Resource;
@@ -25,7 +25,7 @@ public class ConfirmOrderController {
     private static final Logger LOG = LoggerFactory.getLogger(ConfirmOrderController.class);
 
     @Resource
-    private ConfirmOrderService confirmOrderService;
+    private BeforeConfirmOrderService beforeConfirmOrderService;
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -49,7 +49,7 @@ public class ConfirmOrderController {
             // 验证通过后，移除验证码
             redisTemplate.delete(imageCodeToken);
         }
-        confirmOrderService.doConfirm(req);
+        beforeConfirmOrderService.beforeDoConfirm(req);
         return new CommonResp<>();
     }
 
