@@ -4,16 +4,17 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.cgz.ticketing.common.resp.PageResp;
-import com.cgz.ticketing.common.util.SnowUtil;
 import com.cgz.ticketing.business.domain.SkToken;
 import com.cgz.ticketing.business.domain.SkTokenExample;
 import com.cgz.ticketing.business.mapper.SkTokenMapper;
+import com.cgz.ticketing.business.mapper.cust.SkTokenMapperCust;
 import com.cgz.ticketing.business.req.SkTokenQueryReq;
 import com.cgz.ticketing.business.req.SkTokenSaveReq;
 import com.cgz.ticketing.business.resp.SkTokenQueryResp;
+import com.cgz.ticketing.common.resp.PageResp;
+import com.cgz.ticketing.common.util.SnowUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,8 @@ public class SkTokenService {
     private DailyTrainSeatService dailyTrainSeatService;
     @Resource
     private DailyTrainStationService dailyTrainStationService;
+    @Resource
+    private SkTokenMapperCust skTokenMapperCust;
 
     /**
      * 初始化
@@ -100,5 +103,19 @@ public class SkTokenService {
 
     public void delete(Long id) {
         skTokenMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 获取令牌
+     */
+    public boolean validSkToken(Date date, String trainCode, Long memberId) {
+        LOG.info("会员【{}】获取日期【{}】车次【{}】的令牌开始", memberId, DateUtil.formatDate(date), trainCode);
+        // 令牌约等于库存，令牌没有了，就不再卖票，不需要再进入购票主流程去判断库存，判断令牌肯定比判断库存效率高
+        int updateCount = skTokenMapperCust.decrease(date, trainCode);
+        if (updateCount > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
