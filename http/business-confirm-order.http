@@ -16,3 +16,8 @@ token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYmYiOjE2OTE4MjUwMjMsIm1vYmlsZSI6
   }],
   "trainCode":"G101"
 }
+###
+
+GET http://localhost:8000/business/confirm-order/query-line-count/1662452972099080192
+Content-Type: application/json
+token: {{token}}
